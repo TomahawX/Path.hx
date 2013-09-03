@@ -1,0 +1,11 @@
+{
+    "name": "path",
+    "url" : "https://github.com/TomahawX/Path.hx",
+    "license": "MIT",
+    "tags": ["utility", "file", "folder"],
+    "description": "Path utility inpired by Python's os.path",
+    "version": "0.0.1",
+    "releasenote": "Initial release",
+    "contributors": ["dawicorti"],
+    "dependencies": {}
+}
