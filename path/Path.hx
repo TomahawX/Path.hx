@@ -1,36 +1,38 @@
 package path;
 
+import sys.FileSystem;
+
 class Path {
 
     static private var sep:String = '/';
 
     static public function abspath (path) {
-        return sys.fullPath(path);
+        return FileSystem.fullPath(path);
     }
 
     static public function exists (path:String):Bool {
-        return sys.FileSystem.exists(path);
+        return FileSystem.exists(path);
     }
 
-    static public function join (parts:Array<String>) {
+    static public function join (parts:Array<String>):String {
         return parts.join(sep);
     }
 
     static public function split (path):Array<String> {
-        var pattern = ~/^([^\/\\]*)\/([^\/\\]*)$/;
+        var pattern = ~/^(.+)\/([^\/\\]+)$/;
         pattern.match(path);
-        return [pattern.matched(1), pattern.matched(2)]
+        return [pattern.matched(1), pattern.matched(2)];
     }
 
-    static public function basename (path) {
-        // Not implemented yet
-    }
-
-    static public function commonprefix (list) {
-        // Not implemented yet
+    static public function basename (path:String):String {
+        return Path.split(path)[1];
     }
 
     static public function dirname (path) {
+        return Path.split(path)[0];   
+    }
+
+    static public function commonprefix (list) {
         // Not implemented yet
     }
 
