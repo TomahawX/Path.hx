@@ -28,8 +28,49 @@ class Path {
         return Path.split(path)[1];
     }
 
-    static public function dirname (path) {
+    static public function dirname (path:String):String {
         return Path.split(path)[0];   
+    }
+
+    static public function expanduser (path:String):String {
+        var pattern = ~/~/;
+
+        return pattern.replace(path, Sys.environment().get('HOME'));
+    }
+
+    static public function splitext (path:String):Array<String> {
+        var pattern = ~/(.+)(\.[^\.]+)/;
+
+        pattern.match(path);
+        return [pattern.matched(1), pattern.matched(2)];
+    }
+
+    static private function _visitFolder(path:String, visit:Dynamic, arg:Dynamic) {
+        var fileNames = [];
+        var subdirPathes = [];
+
+        for (subElement in FileSystem.readDirectory(path)) {
+            var subPath = Path.join([path, subElement]);
+
+            if (FileSystem.isDirectory(subPath)) {
+                subdirPathes.push(subPath);
+            } else {
+                fileNames.push(subElement);
+            }
+        }
+
+        visit(arg, path, fileNames);
+
+        for (subdirPath in subdirPathes) {
+            _visitFolder(subdirPath, visit, arg);
+        }
+
+    }
+
+    static public function walk (path:String, visit:Dynamic, arg:Dynamic) {
+        if (Reflect.isFunction(visit)) {
+            _visitFolder(path, visit, arg);
+        }
     }
 
     static public function commonprefix (list) {
@@ -37,10 +78,6 @@ class Path {
     }
 
     static public function lexists (path) {
-        // Not implemented yet
-    }
-
-    static public function expanduser (path) {
         // Not implemented yet
     }
 
@@ -116,15 +153,7 @@ class Path {
         // Not implemented yet
     }
 
-    static public function splitext (path) {
-        // Not implemented yet
-    }
-
     static public function splitunc (path) {
-        // Not implemented yet
-    }
-
-    static public function walk (path, visit, arg) {
         // Not implemented yet
     }
 }

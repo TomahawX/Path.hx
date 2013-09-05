@@ -2,8 +2,12 @@ import path.Path;
 
 class MainTest {
 
+    static function readFolder(arg, dirName, fileNames) {
+        trace(dirName, fileNames);
+    }
+
     static function main() {
-        trace(Path.dirname(Path.abspath('.')));
+        Path.walk(Path.abspath('.'), MainTest.readFolder, null);
     }
 
 }
